@@ -15,7 +15,7 @@ def main():
     except OSError as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
-    print(functions.count(ops, 50, 99))
+    print(functions.countClickZero(ops, 50, 99))
     return 0
 
 def parse(input) -> int:
