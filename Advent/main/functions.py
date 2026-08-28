@@ -50,7 +50,7 @@ def sumBadIds(sets) -> int:
     result = 0
     for set in sets:
         for value in range(int(set[0]), int(set[1]) + 1):
-            if isDoubleNumber(value):
+            if isRepeatedNumber(value):
                 # print(value)
                 result += value
     return result
@@ -74,3 +74,44 @@ def isDoubleNumber(front) -> bool:
             return True
 
     return False
+
+def isRepeatedNumber(front) -> bool:
+    back = 0
+    power = 0
+    leadingZero = False
+    while (front > back):
+        r = front % 10
+        front = front // 10
+        back = back  + r * pow(10, power)
+
+        if (r == 0 and back != 0):
+            leadingZero = True
+        elif (r != 0 and back != 0):
+            leadingZero = False
+
+        if (verifyRepeatedNumber(front, back, power) and not leadingZero):
+            return True
+
+        if (back == front and not leadingZero):
+            return True
+
+        power += 1
+
+    return False
+
+def verifyRepeatedNumber(prefix, suffix, power) -> bool:
+    # print(f"{prefix}, {suffix}, {power}")
+    section = []
+    while (prefix > 0):
+        r2 = prefix % (10 * pow(10, power))
+        section.append(r2)
+        prefix = prefix // (10 * pow(10, power))
+
+    if(len(section) == 0):
+        return False
+
+    for value in section:
+        if value != suffix:
+            return False
+
+    return True

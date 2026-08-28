@@ -64,5 +64,29 @@ class TestAdd(unittest.TestCase):
         list = [11,22,99,1010,1188511885,222222,446446,38593859]
         for value in list:
             self.assertEqual(functions.isDoubleNumber(value), True)
+
+    #repeatedNumber
+    def test_isRepeatedNumber_20(self):
+            self.assertFalse(functions.isRepeatedNumber(20))
+    def test_isRepeatedNumber_101(self):
+        self.assertFalse(functions.isRepeatedNumber(101))
+    def test_isRepeatedNumber_11111(self):
+        self.assertTrue(functions.isRepeatedNumber(11111))
+    def test_isRepeatedNumber_1212121212(self):
+        self.assertTrue(functions.isRepeatedNumber(1212121212))
+    def test_isRepeatedNumber_824824824(self):
+            self.assertTrue(functions.isRepeatedNumber(824824824))
+    def test_isRepeatedNumber_1010101010(self):
+            self.assertTrue(functions.isRepeatedNumber(1010101010))
+    def test_isRepeatedNumber_1000010000100001000010000(self):
+            self.assertTrue(functions.isRepeatedNumber(1000010000100001000010000))
+
+    #verifyRepeatedNumber
+    def test_verifyRepeatedNumber_11111(self):
+         self.assertTrue(functions.verifyRepeatedNumber(1111,1,0))
+    def test_verifyRepeatedNumber_121111(self):
+        self.assertFalse(functions.verifyRepeatedNumber(12111,1,0))
+    def test_verifyRepeatedNumber_10000001(self):
+        self.assertFalse(functions.verifyRepeatedNumber(1000000,1,0))
 if __name__ == "__main__":
     unittest.main()
