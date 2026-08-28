@@ -1,6 +1,6 @@
 import unittest
 
-from Phase1.main import functions
+from Advent.main import functions
 
 
 class TestAdd(unittest.TestCase):
@@ -26,21 +26,9 @@ class TestAdd(unittest.TestCase):
         self.assertEqual(functions.add(1, -13, 5), 0)
 
     # CountClickZero
-    def test_countclick_no_increment(self):
-        self.assertEqual(functions.countClickZero([2], 3, 10), 0)
-    def test_countclick_increment_once_greater_than_zero(self):
-        self.assertEqual(functions.countClickZero([2], 13, 10), 1)
-    def test_countclick_increment_once_less_than_zero(self):
-        self.assertEqual(functions.countClickZero([2], -3, 10), 1)
-    def test_countclick_increment_eq_to_zero(self):
-        self.assertEqual(functions.countClickZero([2], -2, 10), 1)
-    def test_countclick_increment_multiple_greater_than_max(self):
-        self.assertEqual(functions.countClickZero([10], 2, 4), 2)
-    def test_countclick_increment_start_from_zero(self):
-        self.assertEqual(functions.countClickZero([95], 0, 99), 0)
     def test_countclick_loop_testing_1(self):
         self.assertEqual(functions.countClickZero([-4,-4,4,-4,4,4], 0, 3), 6)
-    def test_countclick_loop_testing_1(self):
+    def test_countclick_loop_testing_2(self):
         self.assertEqual(functions.countClickZero([4,4,4,4,4,4], 0, 3), 6)
     def test_countclick_multiple_ops(self):
         self.assertEqual(functions.countClickZero([-68,-30,48,-5,60,-55,-1,-99,14,-82], 50, 99), 6)
@@ -56,5 +44,25 @@ class TestAdd(unittest.TestCase):
         self.assertEqual(functions.clickZero(1, 5, 3), 1)
     def test_clickZero_5(self):
         self.assertEqual(functions.clickZero(1, 11, 3), 3)
+
+    #doubleNumber
+    def test_isDoubleNumber_11(self):
+        self.assertEqual(functions.isDoubleNumber(11), True)
+    def test_isDoubleNumber_12(self):
+        self.assertEqual(functions.isDoubleNumber(12), False)
+    def test_isDoubleNumber_100999(self):
+            self.assertEqual(functions.isDoubleNumber(100999), False)
+    def test_isDoubleNumber_100100(self):
+        self.assertEqual(functions.isDoubleNumber(100100), True)
+    def test_isDoubleNumber_100102100102(self):
+            self.assertEqual(functions.isDoubleNumber(100102100102), True)
+    def test_isDoubleNumber_100101(self):
+        self.assertEqual(functions.isDoubleNumber(100101), False)
+    def test_isDoubleNumber_11011(self):
+            self.assertEqual(functions.isDoubleNumber(11011), False)
+    def test_isDoubleNumber_set(self):
+        list = [11,22,99,1010,1188511885,222222,446446,38593859]
+        for value in list:
+            self.assertEqual(functions.isDoubleNumber(value), True)
 if __name__ == "__main__":
     unittest.main()

@@ -1,4 +1,6 @@
 # Counting numbers of zeros
+import math
+
 def countZeros(arr, start, max) -> int:
     count = 0
     for value in arr:
@@ -44,3 +46,31 @@ def add(first, second, max) -> int:
 
     return sum
 
+def sumBadIds(sets) -> int:
+    result = 0
+    for set in sets:
+        for value in range(int(set[0]), int(set[1]) + 1):
+            if isDoubleNumber(value):
+                # print(value)
+                result += value
+    return result
+
+def isDoubleNumber(front) -> bool:
+    back = 0
+    power = 0
+    leadingZero = False
+    while (front > back):
+        # print(f"1: f: {front} b:{back}")
+        r = front % 10
+        front = front // 10
+        back = back  + r * pow(10, power)
+        power += 1
+        if (r == 0 and back != 0):
+            leadingZero = True
+        elif (r != 0 and back != 0):
+            leadingZero = False
+        # print(f"            2: f: {front} b:{back} p:{power}")
+        if (back == front and not leadingZero):
+            return True
+
+    return False
