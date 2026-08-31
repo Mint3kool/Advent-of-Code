@@ -1,5 +1,6 @@
 # Counting numbers of zeros
 import math
+import time
 
 def countZeros(arr, start, max) -> int:
     count = 0
@@ -115,3 +116,59 @@ def verifyRepeatedNumber(prefix, suffix, power) -> bool:
             return False
 
     return True
+
+def maxVoltage(batteries) -> int:
+    total = 0
+    for value in batteries:
+        total += getBatteryVoltage(value, 12)
+
+    return total
+
+def getBatteryVoltage(battery) -> int:
+    if battery < 11:
+        raise(f"Invalid battery size, must be > 100: {battery}")
+
+    left = 0
+    right = 0
+    right = battery % 10
+    battery = battery // 10
+    left = battery % 10
+    battery = battery // 10
+
+    # print(f"{left}, {right}")
+
+    while battery > 0:
+        r = battery % 10
+        # print(f"{battery}, {r}")
+        battery = battery // 10
+        if (r > left):
+            right = max(left, right)
+            left = r
+        elif(r == left):
+            if left > right:
+                right = r
+        if (left == 9 and right == 9):
+            return 99
+    
+    return left * 10 + right
+
+def getBatteryVoltage(bank, size) -> int:
+    voltage = 0
+    batteries = []
+    while bank > 0:
+        r = bank % 10
+        bank = bank // 10
+        batteries.append(r)
+
+    maxRange = len(batteries)
+    for offset in reversed(range(size)):
+        maxInRange = savedIndex = -1
+        while (offset < maxRange):
+            if (batteries[offset] >= maxInRange):
+                maxInRange = batteries[offset]
+                savedIndex = offset
+            offset += 1
+        voltage = voltage * 10 + maxInRange
+        batteries[savedIndex] = 0
+        maxRange = savedIndex
+    return voltage

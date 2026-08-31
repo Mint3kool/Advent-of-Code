@@ -88,5 +88,34 @@ class TestAdd(unittest.TestCase):
         self.assertFalse(functions.verifyRepeatedNumber(12111,1,0))
     def test_verifyRepeatedNumber_10000001(self):
         self.assertFalse(functions.verifyRepeatedNumber(1000000,1,0))
+
+    # maxVoltage
+    def test_maxVoltage(self):
+        self.assertEqual(functions.maxVoltage([99,11,33]), 143)
+    def test_maxVoltage_larger_batts(self):
+        self.assertEqual(functions.maxVoltage([987654321111111,811111111111119,234234234234278,818181911112111]), 357)
+
+    # getBatteryVoltage
+    def test_getBatteryVoltage_99(self):
+        self.assertEqual(functions.getBatteryVoltage(99), 99)
+    def test_getBatteryVoltage_119911(self):
+        self.assertEqual(functions.getBatteryVoltage(119911), 99)
+    def test_getBatteryVoltage_123456(self):
+        self.assertEqual(functions.getBatteryVoltage(123456), 56)
+    def test_getBatteryVoltage_654321(self):
+        self.assertEqual(functions.getBatteryVoltage(654321), 65)
+
+    def test_getBatteryVoltage_654321_len4(self):
+        self.assertEqual(functions.getBatteryVoltage(654321, 4), 6543)
+    def test_getBatteryVoltage_123456789_len4(self):
+        self.assertEqual(functions.getBatteryVoltage(123456789, 7), 3456789)
+    def test_getBatteryVoltage_1111111111111111_len4(self):
+        self.assertEqual(functions.getBatteryVoltage(1111111111111111, 4), 1111)
+    def test_getBatteryVoltage_987654321111111_len12(self):
+        self.assertEqual(functions.getBatteryVoltage(987654321111111, 12), 987654321111)
+    def test_getBatteryVoltage_234234234234278_len12(self):
+        self.assertEqual(functions.getBatteryVoltage(234234234234278, 12), 434234234278)
+    
 if __name__ == "__main__":
     unittest.main()
+3
