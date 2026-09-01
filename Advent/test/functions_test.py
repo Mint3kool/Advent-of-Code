@@ -115,7 +115,11 @@ class TestAdd(unittest.TestCase):
         self.assertEqual(functions.getBatteryVoltage(987654321111111, 12), 987654321111)
     def test_getBatteryVoltage_234234234234278_len12(self):
         self.assertEqual(functions.getBatteryVoltage(234234234234278, 12), 434234234278)
-    
+
+    def test_countAccessibleRolls_noCenterRolls(self):
+        self.assertEqual(functions.countAccessibleRolls([".@.","...","@@@"]), 0)
+    def test_countAccessibleRolls_allCenterRolls(self):
+        self.assertEqual(functions.countAccessibleRolls([".@.","@@@","..@"]), 2)
 if __name__ == "__main__":
     unittest.main()
 3

@@ -172,3 +172,34 @@ def getBatteryVoltage(bank, size) -> int:
         batteries[savedIndex] = 0
         maxRange = savedIndex
     return voltage
+
+def countAccessibleRolls(rows) -> int:
+    total = 0
+    if (len(rows[1]) < 1):
+        return 0
+
+    maxLen = len(rows[1])
+
+    ## Always using the middle row to count elements around
+    for index, element in enumerate(rows[1]):
+        if (element == "@"):
+            l = getLower(index, 1)
+            r = getHigher(index, 1, maxLen)
+
+            segment = rows[0][l:r] + rows[1][l:r] + rows[2][l:r]
+            count = segment.count("@") - 1
+            
+            if (count < 4):
+                total += 1
+
+    return total
+
+def getLower(index, offset) -> int:
+    if (index - offset <= 0):
+        return 0
+    return index - offset
+
+def getHigher(index, offset, max) -> int:
+    if (index + offset > max):
+        return max
+    return index + offset + 1
