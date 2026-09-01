@@ -7,25 +7,32 @@ def main():
         return 1
 
     path = sys.argv[1]
-    context = [""] * 3
+    loadedLines = {}
+    backlog = []
     total_rolls = 0
     try:
         with open(path, "r", encoding="utf-8") as f:
+            lineNumber = 0
             for line in f:
-                context.pop(0)
-                context.append(line.rstrip('\r\n'))
-                total_rolls += functions.countAccessibleRolls(context)
-                # if len(context) == 3:
-                #     context.pop(0)
-        context.pop(0)
-        context.append("")
-        total_rolls += functions.countAccessibleRolls(context)
+                loadedLines[lineNumber] = line.rstrip('\r\n')
+                backlog.append(lineNumber)
+                lineNumber += 1
+
+        removeCount = functions.removeRollsFromBacklog(backlog, loadedLines)
+        while (removeCount > 0):
+            # print(removeCount)
+            total_rolls += removeCount
+            for index in range(len(loadedLines)):
+                backlog.append(index)
+            removeCount = functions.removeRollsFromBacklog(backlog, loadedLines)
+
+        # for index in range(lineNumber):
+        #     print(f"{index} \t {loadedLines[index]}")
     except OSError as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
     print(total_rolls)
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

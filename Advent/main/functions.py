@@ -145,6 +145,58 @@ def getBatteryVoltage(bank, size) -> int:
         maxRange = savedIndex
     return voltage
 
+def removeRollsFromBacklog(backlog, loadedLines) -> int:
+    total_removed = 0
+    while (len(backlog) > 0):
+        # print(backlog)
+        target_row = backlog.pop(0)
+        input_line = loadedLines[target_row]
+        adjLines = getAdjacentRows(target_row, loadedLines)
+        output_line = removeAccessibleRolls(adjLines)
+        # print(input_line)
+        initCount = input_line.count("@")
+        finalCount = output_line.count("@")
+        total_removed += initCount - finalCount
+        if (input_line != output_line):
+            if (target_row > 0):
+                backlog.append(target_row - 1)
+            backlog.append(target_row)
+            loadedLines[target_row] = output_line
+
+    return total_removed
+
+
+def getAdjacentRows(targetLineNum, context):
+    top = bottom = ""
+    target = context[targetLineNum]
+    if (targetLineNum - 1 in context):
+        top = context[targetLineNum - 1]
+    if (targetLineNum + 1 in context):
+        bottom = context[targetLineNum + 1]
+    return [top, target, bottom]
+
+def removeAccessibleRolls(rows) -> str:
+    maxLen = len(rows[1])
+    middle = list(rows[1])
+
+    # print(f"{len(rows[0])} ; {len(rows[1])} ; {len(rows[2])}")
+    # print(f"{rows[0]} ; {rows[1]} ; {rows[2]}")
+    if(len(rows[0]) == 0 and len(rows[2]) == 0):
+        print("skipped")
+        return rows[1]
+
+    ## Always using the middle row to count elements around
+    for index, element in enumerate(rows[1]):
+        l = 0 if index - 1 <= 0  else index - 1
+        r = maxLen if index + 1 > maxLen else index + 1 + 1
+
+        segment = rows[0][l:r] + "".join(middle)[l:r] + rows[2][l:r]
+        if (canRemoveRoll(segment, element)):
+            middle[index] = "."
+        # print(middle)
+
+    return "".join(middle)
+
 def countAccessibleRolls(rows) -> int:
     total = 0
     if (len(rows[1]) < 1):
@@ -165,3 +217,14 @@ def countAccessibleRolls(rows) -> int:
                 total += 1
 
     return total
+
+def canRemoveRoll(segment, element) -> bool:
+    if (element != "@"):
+        return False
+    
+    count = segment.count("@") - 1
+
+    if (count < 4):
+        return True
+
+    return False

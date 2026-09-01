@@ -121,5 +121,21 @@ class TestAdd(unittest.TestCase):
     def test_countAccessibleRolls_allCenterRolls(self):
         self.assertEqual(functions.countAccessibleRolls([".@.","@@@","..@"]), 2)
 
+    def test_removeAccessibleRolls(self):
+        self.assertEqual(functions.removeAccessibleRolls(["","..@@.@@@@.", "@@@.@.@.@@"]), "..........")
+    def test_removeAccessibleRolls_corner(self):
+        self.assertEqual(functions.removeAccessibleRolls(["..........","...@@@....", "...@@@@..."]), "....@@....")
+
+    def test_getAdjacentRows(self):
+         context = {1:"a",2:"b",3:"c",4:"d"}
+         self.assertEqual(functions.getAdjacentRows(3, context), ["b", "c", "d"])
+    def test_getAdjacentRows_start(self):
+         context = {1:"a",2:"b",3:"c",4:"d"}
+         self.assertEqual(functions.getAdjacentRows(1, context), ["", "a", "b"])
+    def test_getAdjacentRows_end(self):
+         context = {1:"a",2:"b",3:"c",4:"d"}
+         self.assertEqual(functions.getAdjacentRows(4, context), ["c", "d", ""])
+
+
 if __name__ == "__main__":
     unittest.main()
