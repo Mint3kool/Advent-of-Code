@@ -117,40 +117,12 @@ def verifyRepeatedNumber(prefix, suffix, power) -> bool:
 
     return True
 
-def maxVoltage(batteries) -> int:
+def maxVoltage(bank) -> int:
     total = 0
-    for value in batteries:
-        total += getBatteryVoltage(value, 12)
+    for batteries in bank:
+        total += getBatteryVoltage(batteries, 12)
 
     return total
-
-def getBatteryVoltage(battery) -> int:
-    if battery < 11:
-        raise(f"Invalid battery size, must be > 100: {battery}")
-
-    left = 0
-    right = 0
-    right = battery % 10
-    battery = battery // 10
-    left = battery % 10
-    battery = battery // 10
-
-    # print(f"{left}, {right}")
-
-    while battery > 0:
-        r = battery % 10
-        # print(f"{battery}, {r}")
-        battery = battery // 10
-        if (r > left):
-            right = max(left, right)
-            left = r
-        elif(r == left):
-            if left > right:
-                right = r
-        if (left == 9 and right == 9):
-            return 99
-    
-    return left * 10 + right
 
 def getBatteryVoltage(bank, size) -> int:
     voltage = 0
@@ -183,23 +155,13 @@ def countAccessibleRolls(rows) -> int:
     ## Always using the middle row to count elements around
     for index, element in enumerate(rows[1]):
         if (element == "@"):
-            l = getLower(index, 1)
-            r = getHigher(index, 1, maxLen)
+            l = 0 if index - 1 <= 0  else index - 1
+            r = maxLen if index + 1 > maxLen else index + 1 + 1
 
             segment = rows[0][l:r] + rows[1][l:r] + rows[2][l:r]
             count = segment.count("@") - 1
-            
+
             if (count < 4):
                 total += 1
 
     return total
-
-def getLower(index, offset) -> int:
-    if (index - offset <= 0):
-        return 0
-    return index - offset
-
-def getHigher(index, offset, max) -> int:
-    if (index + offset > max):
-        return max
-    return index + offset + 1
