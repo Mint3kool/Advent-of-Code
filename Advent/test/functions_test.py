@@ -136,6 +136,53 @@ class TestAdd(unittest.TestCase):
          context = {1:"a",2:"b",3:"c",4:"d"}
          self.assertEqual(functions.getAdjacentRows(4, context), ["c", "d", ""])
 
+    def test_inRanges(self):
+        context = [[3,5]]
+        self.assertTrue(functions.inRanges(context, 3))
+        self.assertTrue(functions.inRanges(context, 4))
+        self.assertTrue(functions.inRanges(context, 5))
+
+    def test_inRanges_reverse(self):
+        context = [[5,3]]
+        self.assertTrue(functions.inRanges(context, 3))
+        self.assertTrue(functions.inRanges(context, 4))
+        self.assertTrue(functions.inRanges(context, 5))
+
+    def test_inRanges_outside(self):
+        context = [[5,3]]
+        self.assertFalse(functions.inRanges(context, 2))
+        self.assertFalse(functions.inRanges(context, 6))
+        self.assertFalse(functions.inRanges(context, 32))
+
+    def test_combineRanges_inSet(self):
+         context = [[0,1]]
+         newRange = [0,3]
+         self.assertListEqual(functions.combineRanges(context, newRange), [[0,3]])
+
+    def test_combineRanges_lowValue(self):
+        context = [[5,7]]
+        newRange = [2,5]
+        self.assertListEqual(functions.combineRanges(context, newRange), [[2,7]])
+
+    def test_combineRanges_highValue(self):
+        context = [[5,7]]
+        newRange = [6,12]
+        self.assertListEqual(functions.combineRanges(context, newRange), [[5,12]])
+
+    def test_combineRanges_combine_one(self):
+        context = [[1,3],[7,8]]
+        newRange = [3,7]
+        self.assertListEqual(functions.combineRanges(context, newRange), [[1,8]])
+
+    def test_combineRanges_combine_multiple(self):
+        context = [[1,3],[7,8],[22,15],[1,1],[99,100]]
+        newRange = [2,20]
+        self.assertListEqual(functions.combineRanges(context, newRange), [[99,100], [1,22]])
+
+    def test_combineRanges_combine_multiple_alt_order(self):
+            context = [[1,3],[1,1],[99,100],[7,8],[22,15]]
+            newRange = [2,20]
+            self.assertListEqual(functions.combineRanges(context, newRange), [[99,100], [1,22]])
 
 if __name__ == "__main__":
     unittest.main()

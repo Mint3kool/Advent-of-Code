@@ -228,3 +228,48 @@ def canRemoveRoll(segment, element) -> bool:
         return True
 
     return False
+
+def inRanges(idRanges, inputId) -> bool:
+    for ids in idRanges:
+        minVal = min(ids[0], ids[1])
+        maxVal = max(ids[0], ids[1])
+        if inputId >= minVal and inputId <= maxVal:
+            return True
+
+    return False
+
+def inRange(idRange, inputId) -> bool:
+    minVal = min(idRange[0], idRange[1])
+    maxVal = max(idRange[0], idRange[1])
+    if inputId >= minVal and inputId <= maxVal:
+        return True
+
+    return False
+
+def combineRanges(idRanges, newRange):
+    minNewVal = min(newRange[0], newRange[1])
+    maxNewVal = max(newRange[0], newRange[1])
+
+    newSets = []
+
+    if (len(idRanges) == 0):
+        idRanges.append([minNewVal, maxNewVal])
+        return idRanges
+
+    index = 0
+    while index < len(idRanges):
+        if (inRange(idRanges[index], minNewVal) or inRange(idRanges[index], maxNewVal)
+            or inRange([minNewVal, maxNewVal], idRanges[index][0]) or inRange([minNewVal, maxNewVal], idRanges[index][1])):
+            # found = True
+            minNewVal = min(minNewVal, idRanges[index][0], idRanges[index][1])
+            maxNewVal = max(maxNewVal, idRanges[index][0], idRanges[index][1])
+            newSets.append([minNewVal, minNewVal])
+            idRanges.pop(index)
+        else:
+            index = index + 1
+
+        # print(f"{idRanges}| {minNewVal}, {maxNewVal}")
+  
+    idRanges.append([minNewVal, maxNewVal])
+
+    return idRanges
