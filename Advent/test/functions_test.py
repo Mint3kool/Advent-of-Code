@@ -1,4 +1,5 @@
 import unittest
+import numpy as np
 
 from Advent.main import functions
 
@@ -183,6 +184,11 @@ class TestAdd(unittest.TestCase):
             context = [[1,3],[1,1],[99,100],[7,8],[22,15]]
             newRange = [2,20]
             self.assertListEqual(functions.combineRanges(context, newRange), [[99,100], [1,22]])
+
+    def test_decompose_array(self):
+        context = [["123","328"," 51","64 "],[" 45","64 ","387","23 "],["  6","98 ","215","314"]]
+        arr = np.array(context)
+        functions.decomposeArray(arr)
 
 if __name__ == "__main__":
     unittest.main()

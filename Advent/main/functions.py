@@ -1,6 +1,7 @@
 # Counting numbers of zeros
 import math
 import time
+import numpy as np
 
 def countZeros(arr, start, max) -> int:
     count = 0
@@ -273,3 +274,68 @@ def combineRanges(idRanges, newRange):
     idRanges.append([minNewVal, maxNewVal])
 
     return idRanges
+
+def workOnSplitLine(input) -> int:
+    operations = input.pop()
+    currentOp = ""
+    arr = np.array(input)
+    result = np.where(arr == ' ', '0', arr).astype(int)
+
+    runningTotal = 0
+    rowTotal = 0
+
+    for index, value in enumerate(input[0]):
+        currentValue = 0
+        power = 0
+
+        if (len(operations) > 0 and operations[0] != " "):
+            currentOp = operations.pop(0)
+        else:
+            if len(operations) > 0:
+                operations.pop(0)
+        
+        for value in result[:,index]:
+            if (value > 0):
+                currentValue = currentValue * 10
+                currentValue += value
+                
+                power += 1
+
+        # print(currentValue)
+        # print(currentOp)
+
+        if (currentValue != 0):
+            if rowTotal == 0:
+                rowTotal = currentValue
+            else:
+                rowTotal = basicCalculate(rowTotal, currentValue, currentOp)
+        else:
+            print(f"rt: {rowTotal}")
+            runningTotal += rowTotal
+            rowTotal = 0
+            currentOp = ""
+
+    if rowTotal > 0:
+        runningTotal = basicCalculate(runningTotal, rowTotal, "+")
+    
+    return runningTotal
+
+def basicCalculate(first, second, operation) -> int:
+    match operation:
+        case "+":
+            return first + second
+        case "*":
+            return first * second
+
+def findSumTotal(input) -> int:
+    total = 0
+    ops = input.pop()
+    arr = np.array(input, dtype=int)
+
+    for index, value in enumerate(ops):
+        match value:
+            case "+":
+                total += np.sum(arr[:, index])
+            case "*":
+                total += np.prod(arr[:, index])
+    return total
