@@ -301,9 +301,6 @@ def workOnSplitLine(input) -> int:
                 
                 power += 1
 
-        # print(currentValue)
-        # print(currentOp)
-
         if (currentValue != 0):
             if rowTotal == 0:
                 rowTotal = currentValue
