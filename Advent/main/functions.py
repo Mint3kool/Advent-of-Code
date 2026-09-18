@@ -1,6 +1,7 @@
 # Counting numbers of zeros
 import math
 import time
+import re
 import numpy as np
 
 def countZeros(arr, start, max) -> int:
@@ -336,3 +337,70 @@ def findSumTotal(input) -> int:
             case "*":
                 total += np.prod(arr[:, index])
     return total
+
+def splitBeams(parentSet, child):
+    parent = parentSet[0]
+    splitCount = parentSet[1]
+
+    if (len(parent) == 0):
+        return [child,0]
+
+    for index, value in enumerate(parent):
+        if value == "S":
+            child = child[:index] + "|" + child[index + 1:]
+        elif value == "|":
+            if child[index] != "^":
+                child = child[:index] + "|" + child[index + 1:]
+
+    for index, value in enumerate(child):
+        if value == "^" and parent[index] == "|":
+            child = child[:index - 1] + "|^|" + child[index + 2:]
+            index += 2
+            splitCount += 2
+
+    return [child,splitCount]
+
+def splitBeamsButQuantum(graph, rowNum) -> int:
+    sum = 0
+    if (rowNum == len(graph) - 1):
+        return 1
+
+    top = graph[0]
+    if rowNum == -1:
+        for location, value in enumerate(top):
+            if value == "S":
+                return splitBeamsButQuantum(graph, 0)
+    else:
+        currentRow = graph[rowNum + 1]
+        newRow = currentRow
+        
+        rowList = []
+        for location, value in enumerate(currentRow):
+            if (value == "|"):
+                newRow = newRow[:location] + "|" + newRow[location + 1:]
+                rowList.append(newRow)
+            elif (value == "."):
+                if (graph[rowNum][location] == "S"):
+                    newRow = newRow[:location] + "|" + newRow[location + 1:]
+                    rowList.append(newRow)
+                elif (graph[rowNum][location] == "|"):
+                    newRow = newRow[:location] + "|" + newRow[location + 1:]
+                    rowList.append(newRow)
+            elif (value == "^"):
+                if (graph[rowNum][location] == "|"):
+                    rowList.append(newRow[:location-1] + "|^" + newRow[location + 1:])
+                    rowList.append(newRow[:location] + "^|" + newRow[location + 2:])
+            elif (re.match(r"^\d+$", value)):
+                print(value)
+                print("numFound")
+                return int(value)
+
+        for row in rowList:
+            newGraph = graph[1:]
+            newGraph[0] = row
+            value = splitBeamsButQuantum(newGraph, 0)
+            location = row.index("|")
+            newRow = newRow[:location] + str(value) + newRow[location + 1:]
+            sum += value
+
+    return sum

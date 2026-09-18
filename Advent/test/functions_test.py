@@ -190,5 +190,43 @@ class TestAdd(unittest.TestCase):
         arr = np.array(context)
         functions.decomposeArray(arr)
 
+    def test_splitBeams_start(self):
+         parent = ["..S..", 0]
+         child = "....."
+         self.assertEqual(functions.splitBeams(parent, child), ["..|..",0])
+
+    def test_splitBeams_existingBeams(self):
+         parent = ["..|.|,",0]
+         child = "....."
+         self.assertEqual(functions.splitBeams(parent, child), ["..|.|",0])
+
+    def test_splitBeams_splitBeams(self):
+             parent = ["..|.|",0]
+             child =  "..^.|"
+             self.assertEqual(functions.splitBeams(parent, child), [".|^||",1])
+
+    def test_splitBeams_adjacentBeams(self):
+        parent = [".|.|.|.",0]
+        child =  ".^.^.^."
+        self.assertEqual(functions.splitBeams(parent, child), ["|^|^|^|",3])
+
+    def test_splitBeamsButQuantum_init(self):
+         graph = ["..S..","....."]
+         self.assertEqual(functions.splitBeamsButQuantum(graph, -1), 1)
+
+    def test_splitBeamsButQuantum_oneSplit(self):
+        graph = ["..S..",".....", "..^..", "....."]
+        self.assertEqual(functions.splitBeamsButQuantum(graph, -1), 2)
+
+    def test_splitBeamsButQuantum_moreInvolved(self):
+        graph = [".......S.......",
+                 "...............", 
+                 ".......^.......", 
+                 "...............", 
+                 "......^.^......",
+                 "..............."]
+        self.assertEqual(functions.splitBeamsButQuantum(graph, -1), 4)
+        
+
 if __name__ == "__main__":
     unittest.main()
